@@ -16,6 +16,8 @@ import logging
 _logger = logging.getLogger(__name__)
 try:
     import pysftp
+    cnopts = pysftp.CnOpts()
+    cnopts.hostkeys = None    # disable host key checking.
 except ImportError:
     _logger.debug('Cannot import pysftp')
 
@@ -267,6 +269,7 @@ class DbBackup(models.Model):
             "host": self.sftp_host,
             "username": self.sftp_user,
             "port": self.sftp_port,
+            "cnopts": cnopts
         }
         _logger.debug(
             "Trying to connect to sftp://%(username)s@%(host)s:%(port)d",
